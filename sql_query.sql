@@ -1,4 +1,4 @@
-CREATE TABLE classes (
+CREATE TABLE classes_tb (
     id INT AUTO_INCREMENT PRIMARY KEY,
     
     course VARCHAR(100) NOT NULL,
@@ -12,7 +12,10 @@ CREATE TABLE classes (
     term VARCHAR(100) NOT NULL,
     class_time TIME NOT NULL,
     
-    image_logo VARCHAR(255) NULL,
+    profile VARCHAR(255) NULL,
+    name VARCHAR(50) NOT NULL,
+    gender VARCHAR(50) NOT NULL,
+    age INT NOT NULL,
     
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
