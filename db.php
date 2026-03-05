@@ -1,3 +1,3 @@
 <?php
-    echo "for connect";
+    $conn = new mysqli("localhost","root","","myclass",3306);
 ?>
