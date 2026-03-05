@@ -258,7 +258,6 @@ $("#preview").attr("src","upload/"+img);
 
 });
 
-
 $(document).on("click",".deleteClass",function(){
 
 if(confirm("Delete this class?")){
@@ -266,9 +265,8 @@ if(confirm("Delete this class?")){
 let id=$(this).data("id");
 let image=$(this).data("image");
 
-$.post("insertcass.php",{
+$.post("delete/delete_class.php",{
 
-action:"delete",
 id:id,
 image:image
 
