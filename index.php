@@ -170,7 +170,7 @@ $(document).ready(function(){
             >Edit</a>
             </li>
             <li>
-            <a class="dropdown-item text-danger deleteClass"
+            <a class="btn dropdown-item text-danger deleteClass"
             data-id="${row.id}"
             data-image="${row.image_logo}"
             >Delete</a>
@@ -209,10 +209,7 @@ $(document).ready(function(){
         $("#id").val("");
 
     $("#classModal").modal("show");
-
     });
-
-
     $("#classForm").submit(function(e){
 
     e.preventDefault();
@@ -236,10 +233,8 @@ $(document).ready(function(){
 
 
 $(document).on("click",".editClass",function(){
-
 // model
 $("#classModal").modal("show");
-
     $("#course").val($(this).data("course"));
     $("#lesson").val($(this).data("lesson"));
     $("#building").val($(this).data("building"));
@@ -273,16 +268,12 @@ id:id,
 image:image
 
 },function(){
-
 loadClasses();
-
 });
+    }
+        });
 
-}
-
-});
-
-});
+            }); 
 $("#image_logo").change(function(event){
     let input = event.target;
 
