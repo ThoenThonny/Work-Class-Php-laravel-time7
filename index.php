@@ -8,6 +8,7 @@ include "db.php";
     <title>Classes</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 </head>
 
 <body>
@@ -32,8 +33,7 @@ include "db.php";
             <div class="card-header">
                 <div class="course-box">
                     <div class="logo">
-                        <img style=" width: 42px; height: 42px; border-radius: 50%;"
-                            src="upload/<?= $row['image_logo'] ?>">
+                        <img src="upload/<?= $row['image_logo'] ?>">
                     </div>
                     <div>
                         <div>
@@ -84,7 +84,7 @@ include "db.php";
         </div>
 
         <div class="modal-body">
-            <form id="classForm" enctype="multipart/form-data" method="POST">
+            <form id="classForm" enctype="multipart/form-data" method="POST" novalidate>
                 <div class="grid-form">
                     <div class="icon-box">
                         <!-- <label>CLASS ICON</label> -->
@@ -152,7 +152,7 @@ include "db.php";
 
 <script>
 $(document).ready(function() {
-    $(".edit").click(function() {
+    $(document).on("click", ".edit", function() {
         const card = $(this).closest(".card");
         const id = card.data("id");
         const course = card.data("course");
@@ -200,11 +200,19 @@ $(document).ready(function() {
                 image_logo: image_logo
             },
             success: function(res) {
-                const response = JSON.parse(res);
-                if (response.success) {
+                let response = res;
+                try {
+                    response = JSON.parse(res);
+                } catch (e) {
+                    // keep raw response if not JSON
+                }
+
+                if (response === "success" || (response && response.success)) {
                     $(`#row-${id}`).remove();
                 } else {
-                    alert("Error deleting class: " + response.error);
+                    const err = typeof response === "string" ? response : (response.error ||
+                        "Unknown error");
+                    alert("Error deleting class: " + err);
                 }
             }
         });
@@ -213,9 +221,16 @@ $(document).ready(function() {
     /* OPEN MODAL */
 
     $(".add-btn").click(function() {
+        // Clear any leftover edit state so it always inserts a new record
+        $("#classForm")[0].reset();
+        $("#class_id").val("");
+        $("#old_logo").val("");
+        $("#preview").attr("src", "https://cdn-icons-png.flaticon.com/512/1829/1829586.png");
+        $(".create").text("+ Create Class");
+
         $("#opacity").fadeIn(300).css("display", "flex");
         $(".modal-box").fadeIn(300);
-        $("#title").text("Create Class")
+        $("#title").text("Create Class");
     });
 
 
@@ -224,6 +239,8 @@ $(document).ready(function() {
         $("#opacity").fadeOut(300);
         $(".modal-box").fadeOut(300);
         $("#classForm")[0].reset();
+        $("#class_id").val("");
+        $("#old_logo").val("");
         $("#preview").attr("src",
             "https://cdn-icons-png.flaticon.com/512/1829/1829586.png");
     });
@@ -232,6 +249,8 @@ $(document).ready(function() {
         $("#opacity").fadeOut(300);
         $(".modal-box").fadeOut(300);
         $("#classForm")[0].reset();
+        $("#class_id").val("");
+        $("#old_logo").val("");
         $("#preview").attr("src",
             "https://cdn-icons-png.flaticon.com/512/1829/1829586.png");
     });
@@ -319,8 +338,8 @@ $(document).ready(function() {
                     </div>
 
                     <div class="dropdown">
-                        <div>Edit</div>
-                        <div class="end">End Class</div>
+                        <div class="edit">Edit</div>
+                        <div class="delete">Delete Class</div>
                     </div>
 
                     <div class="card-body" style="margin-top: 15px;">
