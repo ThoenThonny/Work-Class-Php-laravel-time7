@@ -1,3 +1,9 @@
 <?php
-    echo "for connect";
+
+$conn = new mysqli("localhost","root","","employees_php",3306);
+
+if($conn->connect_error){
+    die("Connection Failed: " . $conn->connect_error);
+}
+
 ?>
